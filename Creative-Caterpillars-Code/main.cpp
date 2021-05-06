@@ -53,7 +53,7 @@ if (button == 1){
   } 
 
   //if the drone has reached the first picture height it takes a picture
-  else if(altTemp >= firstPicAlt){
+  if(altTemp == firstPicAlt){
     //turn servo
     //wait some time
     //stop turning servo
@@ -62,7 +62,7 @@ if (button == 1){
 
   //This one is a doozy. Essentially if the remainder from the distance after the firstPicAlt 
   //divided by the picDist is zero then it takes a picture
-  else if((altTemp - firstPicALt)%picdist == 0){
+    if((altTemp - firstPicALt)%picdist == 0){
     //turn servo
     //wait some time
     //stop turning servo 

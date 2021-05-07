@@ -53,7 +53,7 @@ if (button == 1){
   } 
 
   //if the drone has reached the first picture height it takes a picture. It also has a small buffer area
-  if(altTemp == firstPicAlt||altTemp-5==firstPicAlt||altTemp+5==firstPicAlt){
+  if(altTemp == firstPicAlt){
     //turn servo
     //wait some time
     //stop turning servo

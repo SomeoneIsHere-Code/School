@@ -35,6 +35,12 @@ int altTemp = 110;
 //same but for the ultrasonic sensor
 int ultTemp = 0;
 
+//the large buffer for the first picture height
+int largeBuffer = 5;
+
+//the small buffer for the other picture height
+int smallBuffer = 1;
+
 //a variable to see of 
 bool descending = false;
 
@@ -53,7 +59,7 @@ if (button == 1){
   } 
 
   //if the drone has reached the first picture height it takes a picture. It also has a small buffer area
-  if(altTemp == firstPicAlt){
+  if(altTemp == firstPicAlt||altTemp-largeBuffer==firstPicAlt||altTemp+largeBuffer==firstPicAlt){
     //turn servo
     //wait some time
     //stop turning servo

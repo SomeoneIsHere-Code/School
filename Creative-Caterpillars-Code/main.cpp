@@ -5,7 +5,7 @@ logic today as I can while making it easy on myself to add in the pins
 and everything once we have that set in stone
 
 In my usual style I'm going to probably over comment and use way too 
-may variables and functions but it's how I code
+many variables and functions but it's how I code
 
 I'm going to use alt to refer to altitude and to use the altimiter
 whereas I will use dist to refer to distance using the ultrasonic

@@ -2,6 +2,8 @@
 
 EYW::Camera cameraservo;
 
+EYW::RangeFinder proximity; 
+
 //the stand in for the button, 1 is on, 0 is off
 int button = 1;
 
@@ -36,10 +38,19 @@ void setup() {
   //setting up all of the pins
   
   pinMode(buttonPin, INPUT);
-
+  
+  //creating a serial monitor aka reading the values that come in the serial port
+  Serial.begin(9600);
     
-  //Starting the actual code
+  //Starting the servo
   cameraservo.begin();
+
+  //starting the ultrasonic sensor
+  proximity.begin();
+
+  proximity.alarm();
+  
+  
 }
 
 void loop() {
@@ -53,7 +64,7 @@ void loop() {
   if (button == 1){
 
     //if the descent has started and it is on the ground then it resets the button and exits the loop
-    if(ultTemp<=distToGround){
+    if(Dist<=Ground){
     cameraservo.alarm(buzzPin, 600, 100);
   } 
 
@@ -69,12 +80,6 @@ void loop() {
     cameraservo.getPicture();
     numPics++;
   }
-  
-    //if the drone has taken a target amount of pictures then it starts the descent
-    if(numPics >= targetPics){
-    descending = true ; 
-  }
-
 
 }
   

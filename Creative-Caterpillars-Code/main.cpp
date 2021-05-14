@@ -1,35 +1,21 @@
-void setup() {
-  //setting up all of the (placeholder) pins
-  pinMode(2,OUTPUT);
+#include <EYW.h>
 
-  
+EYW::Camera cameraservo;
 
-}
+//the stand in for the button, 1 is on, 0 is off
+int button = 1;
 
-void loop() {
-  // put your main code here, to run repeatedly:
+//the pin that the button will connect to
+int buttonPin = 2;
 
-}
-
-/* 
-Since I can't actually code in our arduino and don't know 
-what the inputs and outputs are I'm going to create as much of the
-logic today as I can while making it easy on myself to add in the pins
-and everything once we have that set in stone
-In my usual style I'm going to probably over comment and use way too 
-many variables and functions but it's how I code
-I'm going to use alt to refer to altitude and to use the altimiter
-whereas I will use dist to refer to distance using the ultrasonic
-sensor
-*/
-
-//First I need to declare all of my variables
+//the pin that the buzzer will connect to
+int buzzPin = 5;
 
 //the altitude at which we take the frst picture
-int firstPicAlt = 100;
+int firstPicAlt = 0;
 
 //the space between each picture after the first
-int picDist = 10;
+int picDist = 0;
 
 //the number of pictures that have been taken
 int numPics = 0;
@@ -38,55 +24,61 @@ int numPics = 0;
 int targetPics = 0;
 
 //maximum height for the drone to be considedered "on the ground"
-int distToGround = 0;
+int Ground = 0;
 
 //a temporary variable to represent the input from the altimiter
-int altTemp = 110;
+int altTemp = 0;
 
-//same but for the ultrasonic sensor
-int ultTemp = 0;
+//the readout from the ultrasonic sensor, ie the distance to the ground
+int Dist = 0;
 
-//a variable to see of 
-bool descending = false;
+void setup() {
+  //setting up all of the pins
+  
+  pinMode(buttonPin, INPUT);
 
-//a temporary variable that will be replaced with a check to 
-//see if the button has been pressed
-int button = 0;
+    
+  //Starting the actual code
+  cameraservo.begin();
+}
 
-//the delay between pictures being taken
-int picDelay = 0;
+void loop() {
+  // put your main code here, to run repeatedly:
+  
+  //checks to see if the button has been pressed at all
+  if(digitalRead(button) == HIGH){
+  button = 1;
+  }
+  
+  if (button == 1){
 
-//checks to see if the button has been pressed at all
-if (button == 1){
-
-  //if the descent has started and it is on the ground then it resets the button and exits the loop
-  if(descending == true && ultTemp<=distToGround){
-    //flash LED
-    button = 0;
-    break
+    //if the descent has started and it is on the ground then it resets the button and exits the loop
+    if(ultTemp<=distToGround){
+    cameraservo.alarm(buzzPin, 600, 100);
   } 
 
-  //if the drone has reached the first picture height it takes a picture. It also has a small buffer area
-  if(altTemp == firstPicAlt){
-    digitalWrite(2,HIGH);
-    delay(picDelay);
-    digitalWrite(2,LOW);
+    //if the drone has reached the first picture height it takes a picture. It also has a small buffer area
+    if(altTemp == firstPicAlt){
+    caneraservo.getPicture();
     numPics++;
   }
 
-  //This one is a doozy. Essentially if the remainder from the distance after the firstPicAlt 
-  //divided by the picDist is zero then it takes a picture
+    //This one is a doozy. Essentially if the remainder from the distance after the firstPicAlt 
+    //divided by the picDist is zero then it takes a picture
     if((altTemp - firstPicALt)%picdist == 0){
-    digitalWrite(2,HIGH);
-    delay(picDelay);
-    digitalWrite(2,LOW); 
+    cameraservo.getPicture();
     numPics++;
   }
   
-  //if the drone has taken a target amount of pictures then it starts the descent
-  if(numPics >= targetPics){
+    //if the drone has taken a target amount of pictures then it starts the descent
+    if(numPics >= targetPics){
     descending = true ; 
   }
 
 
 }
+  
+}
+
+
+

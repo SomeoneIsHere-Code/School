@@ -54,15 +54,15 @@ void setup() {
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-  
   //checks to see if the button has been pressed at all
   if(digitalRead(button) == HIGH){
   button = 1;
   }
   
   if (button == 1){
-
+    
+    Dist = proximity.getDistance()*0.032808;
+    
     //if the descent has started and it is on the ground then it resets the button and exits the loop
     if(Dist<=Ground){
     cameraservo.alarm(buzzPin, 600, 100);

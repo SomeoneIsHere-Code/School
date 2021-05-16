@@ -4,6 +4,8 @@ EYW::Camera cameraservo;
 
 EYW::RangeFinder proximity; 
 
+EYW::Altimeter myaltimeter;
+
 //the stand in for the button, 1 is on, 0 is off
 int button = 1;
 

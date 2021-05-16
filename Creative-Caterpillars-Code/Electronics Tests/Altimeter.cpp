@@ -16,7 +16,8 @@ void setup() {
   //No touch
   Serial.begin(9600);
 
-  //Enables anything with the "proximity" tldn't touch
+  //Enables anything with the "proximity" tag
+  //don't touch
   myaltimeter.begin();
 
   //takes 1000 measurements and sets that value to be the 0

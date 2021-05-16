@@ -11,6 +11,7 @@ int buzzPin = 5;
 //setting the camera part of the library to "cameraservo"
 //in short, don't change this
 EYW::Camera cameraservo;
+
 void setup() {
   //Setting the button pin to intake a signal
   pinMode(buttonPin, INPUT);

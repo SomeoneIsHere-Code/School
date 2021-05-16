@@ -14,10 +14,10 @@ int buttonPin = 2;
 int buzzPin = 5;
 
 //the altitude at which we take the frst picture
-int firstPicAlt = 0;
+int firstPicAlt = 15;
 
 //the space between each picture after the first
-int picDist = 0;
+int picDist = 1;
 
 //the number of pictures that have been taken
 int numPics = 0;
@@ -29,7 +29,7 @@ int targetPics = 0;
 int Ground = 0;
 
 //a temporary variable to represent the input from the altimiter
-int altTemp = 0;
+int Alt = 0;
 
 //the readout from the ultrasonic sensor, ie the distance to the ground
 int Dist = 0;
@@ -50,7 +50,12 @@ void setup() {
 
   proximity.alarm();
   
-  
+  //Setup for the Altimeter
+  myaltimeter.begin();
+
+  myaltimeter.calibrate(1000);
+
+  myaltimeter.alarm();
 }
 
 void loop() {
@@ -61,7 +66,13 @@ void loop() {
   
   if (button == 1){
     
+    //sets the variable "Dist" equal to the input from the ultrasonic sensor(cm)
+    //and multiplies it by a number to convert it to feet
     Dist = proximity.getDistance()*0.032808;
+    
+    //takes 25 measurements and sets "Alt" to the average
+    Alt = myaltimeter.getHeightAvg(25);
+    
     
     //if the descent has started and it is on the ground then it resets the button and exits the loop
     if(Dist<=Ground){
@@ -69,14 +80,14 @@ void loop() {
   } 
 
     //if the drone has reached the first picture height it takes a picture. It also has a small buffer area
-    if(altTemp == firstPicAlt){
+    if(Alt == firstPicAlt){
     caneraservo.getPicture();
     numPics++;
   }
 
     //This one is a doozy. Essentially if the remainder from the distance after the firstPicAlt 
     //divided by the picDist is zero then it takes a picture
-    if((altTemp - firstPicALt)%picdist == 0){
+    if((Alt - firstPicALt)%picdist == 0){
     cameraservo.getPicture();
     numPics++;
   }

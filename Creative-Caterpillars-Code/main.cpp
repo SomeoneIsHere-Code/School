@@ -1,24 +1,23 @@
-/* 
-Since I can't actually code in our arduino and don't know 
-what the inputs and outputs are I'm going to create as much of the
-logic today as I can while making it easy on myself to add in the pins
-and everything once we have that set in stone
+#include <EYW.h>
 
-In my usual style I'm going to probably over comment and use way too 
-many variables and functions but it's how I code
+EYW::Camera cameraservo;
 
-I'm going to use alt to refer to altitude and to use the altimiter
-whereas I will use dist to refer to distance using the ultrasonic
-sensor
-*/
+EYW::RangeFinder proximity; 
 
-//First I need to declare all of my variables
+//the stand in for the button, 1 is on, 0 is off
+int button = 1;
+
+//the pin that the button will connect to
+int buttonPin = 2;
+
+//the pin that the buzzer will connect to
+int buzzPin = 5;
 
 //the altitude at which we take the frst picture
-int firstPicAlt = 100;
+int firstPicAlt = 15;
 
 //the space between each picture after the first
-int picDist = 10;
+int picDist = 1;
 
 //the number of pictures that have been taken
 int numPics = 0;
@@ -27,52 +26,75 @@ int numPics = 0;
 int targetPics = 0;
 
 //maximum height for the drone to be considedered "on the ground"
-int distToGround = 0;
+int Ground = 0;
 
 //a temporary variable to represent the input from the altimiter
-int altTemp = 110;
+int Alt = 0;
 
-//same but for the ultrasonic sensor
-int ultTemp = 0;
+//the readout from the ultrasonic sensor, ie the distance to the ground
+int Dist = 0;
 
-//a variable to see of 
-bool descending = false;
+void setup() {
+  //setting up all of the pins
+  
+  pinMode(buttonPin, INPUT);
+  
+  //creating a serial monitor aka reading the values that come in the serial port
+  Serial.begin(9600);
+    
+  //Starting the servo
+  cameraservo.begin();
 
-//a temporary variable that will be replaced with a check to 
-//see if the button has been pressed
-int button = 0;
+  //starting the ultrasonic sensor
+  proximity.begin();
 
-//checks to see if the button has been pressed at all
-if (button == 1){
+  proximity.alarm();
+  
+  //Setup for the Altimeter
+  myaltimeter.begin();
 
-  //if the descent has started and it is on the ground then it resets the button and exits the loop
-  if(descending == true && ultTemp<=distToGround){
-    //flash LED
-    button = 0;
-    break
-  } 
+  myaltimeter.calibrate(1000);
 
-  //if the drone has reached the first picture height it takes a picture. It also has a small buffer area
-  if(altTemp == firstPicAlt){
-    //turn servo
-    //wait some time
-    //stop turning servo
-    numPics++;
-  }
+  myaltimeter.alarm();
+}
 
-  //This one is a doozy. Essentially if the remainder from the distance after the firstPicAlt 
-  //divided by the picDist is zero then it takes a picture
-    if((altTemp - firstPicALt)%picdist == 0){
-    //turn servo
-    //wait some time
-    //stop turning servo 
-    numPics++;
+void loop() {
+  //checks to see if the button has been pressed at all
+  if(digitalRead(button) == HIGH){
+  button = 1;
   }
   
-  //if the drone has taken a target amount of pictures then it starts the descent
-  if(numPics >= targetPics){
-    descending = true ; 
+  if (button == 1){
+    
+    //sets the variable "Dist" equal to the input from the ultrasonic sensor(cm)
+    //and multiplies it by a number to convert it to feet
+    Dist = proximity.getDistance()*0.032808;
+    
+    //takes 25 measurements and sets "Alt" to the average
+    Alt = myaltimeter.getHeightAvg(25);
+    
+    
+    //if the descent has started and it is on the ground then it resets the button and exits the loop
+    if(Dist<=Ground){
+    cameraservo.alarm(buzzPin, 600, 100);
+  } 
+
+    //if the drone has reached the first picture height it takes a picture. It also has a small buffer area
+    if(Alt == firstPicAlt){
+    caneraservo.getPicture();
+    numPics++;
   }
 
+    //This one is a doozy. Essentially if the remainder from the distance after the firstPicAlt 
+    //divided by the picDist is zero then it takes a picture
+    if((Alt - firstPicALt)%picdist == 0){
+    cameraservo.getPicture();
+    numPics++;
+  }
 
 }
+  
+}
+
+
+

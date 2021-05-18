@@ -77,8 +77,10 @@ void loop() {
     
     
     //if the descent has started and it is on the ground then it resets the button and exits the loop
-    if(Dist<=Ground){
-    cameraservo.alarm(buzzPin, 600, 100);
+    if(Dist<=Ground)
+        for(int i = 0; i== 10; i++){
+          cameraservo.alarm(buzzPin, 600, 100);
+        }
   } 
 
     //if the drone has reached the first picture height it takes a picture. It also has a small buffer area

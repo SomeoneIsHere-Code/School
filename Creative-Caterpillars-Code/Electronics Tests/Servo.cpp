@@ -16,13 +16,15 @@ void setup() {
   //Enables anything with the "cameraservo" tag
   //another one of the things that you shouldn't touch
   cameraservo.begin();
+  cameraservo.calibrate();
+  
 
 
 }
 
 void loop() {
   //this is just going to make the servo wiggle back and fourth a lot
-  cameraservo.calibrate();
+  cameraservo.getPicture();
 
 
 }

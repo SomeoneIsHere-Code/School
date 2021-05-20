@@ -19,7 +19,7 @@ int buzzPin = 5;
 int firstPicAlt = 10;
 
 //the space between each picture after the first
-double picDist = .5;
+int picDist = 1;
 
 //maximum height for the drone to be considedered "on the ground"
 int Ground = 10;
@@ -79,18 +79,14 @@ void loop() {
 
     //if the drone has reached the first picture height it takes a picture. It also has a small buffer area
     if(Alt == firstPicAlt){
-    caneraservo.getPicture();
+    cameraservo.getPicture();
   }
 
     //This one is a doozy. Essentially if the remainder from the distance after the firstPicAlt 
     //divided by the picDist is zero then it takes a picture
-    if((Alt - firstPicALt)%picdist == 0){
+    if((Alt - firstPicAlt)%picDist == 0){
     cameraservo.getPicture();
   }
 
 }
   
-}
-
-
-

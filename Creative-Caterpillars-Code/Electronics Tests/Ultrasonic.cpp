@@ -27,7 +27,7 @@ void loop() {
   //sets the variable "Dist" equal to the input from the ultrasonic sensor(cm)
   //and multiplies it by a number to convert it to feet
   //to have it output centimeters just remove anything between the ) and ;
-  Dist = proximity.getDistance()*0.032808;
+  Dist = proximity.getDistance();
 
   //print what is in the parenthases to the serial monitor that we set up above
   Serial.print("Current Distance: ");

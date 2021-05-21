@@ -92,13 +92,4 @@ void loop() {
 
 }
 
-void simHeight(){
-  for(int i = 0; i<)
-  delay(1000);
-  Alt++;
-  
-  
-  
-  
-  }
   

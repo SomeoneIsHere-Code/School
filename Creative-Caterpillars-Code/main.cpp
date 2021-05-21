@@ -19,10 +19,10 @@ int buzzPin = 5;
 int firstPicAlt = 10;
 
 //the space between each picture after the first
-double picDist = .5;
+int picDist = 1;
 
 //maximum height for the drone to be considedered "on the ground"
-int Ground = 10;
+int Ground = 20;
 
 //a temporary variable to represent the input from the altimiter
 int Alt = 0;
@@ -56,7 +56,7 @@ void setup() {
 
 void loop() {
   //checks to see if the button has been pressed at all
-  if(digitalRead(button) == HIGH){
+  if(cameraservo.buttonPressed()==true){
   button = 1;
   }
   
@@ -67,30 +67,38 @@ void loop() {
     Dist = proximity.getDistance();
     
     //takes 25 measurements and sets "Alt" to the average
-    Alt = myaltimeter.getHeightAvg(25)/100;
+    Alt = myaltimeter.getHeightAvg(25);
+    Alt = Alt/100;
     
     
     //if the descent has started and it is on the ground then it resets the button and exits the loop
     if(Dist<=Ground)
-        for(int i = 0; i== 10; i++){
+        for(int i = 0; i< 10; i++){
           cameraservo.alarm(buzzPin, 600, 100);
-        }
+          delay(1000);
+          }
   } 
 
     //if the drone has reached the first picture height it takes a picture. It also has a small buffer area
     if(Alt == firstPicAlt){
-    caneraservo.getPicture();
+    cameraservo.getPicture();
   }
 
     //This one is a doozy. Essentially if the remainder from the distance after the firstPicAlt 
     //divided by the picDist is zero then it takes a picture
-    if((Alt - firstPicALt)%picdist == 0){
+    if((Alt - firstPicAlt)%picDist == 0){
     cameraservo.getPicture();
   }
 
 }
+
+void simHeight(){
+  for(int i = 0; i<)
+  delay(1000);
+  Alt++;
   
-}
-
-
-
+  
+  
+  
+  }
+  

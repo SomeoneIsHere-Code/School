@@ -11,10 +11,10 @@
 // Robot Configuration:
 // [Name]               [Type]        [Port(s)]
 // Controller1          controller                    
-// Drivetrain           drivetrain    16, 15, 14, 13, 12
-// Front_Lift           motor         11              
-// Back_Lift            motor         17              
-// Ring                 motor         18              
+// Drivetrain           drivetrain    20, 3, 2, 10, 8 
+// Front_Lift           motor         9               
+// Back_Lift            motor         4               
+// Ring                 motor         7               
 // ---- END VEXCODE CONFIGURED DEVICES ----
 
 #include "vex.h"
@@ -39,8 +39,20 @@ competition Competition;
 void pre_auton(void) {
   // Initializing Robot Configuration. DO NOT REMOVE!
   vexcodeInit();
+  //makin sure that the lift motors are moving at 100% speed during auton
   Front_Lift.setVelocity(100, percent);
   Back_Lift.setVelocity(100, percent);
+  Ring.setVelocity(100, percent);
+
+
+  //setting lift motors so they hold when braking, this makes our lift not slide
+  Front_Lift.setBrake(hold);
+  Back_Lift.setBrake(hold);
+  
+  Front_Lift.setPosition(0, degrees);
+  Back_Lift.setPosition(0, degrees);
+  
+
   // All activities that occur before the competition starts
   // Example: clearing encoders, setting servo positions, ...
 }

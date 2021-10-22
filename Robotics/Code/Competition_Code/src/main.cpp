@@ -68,9 +68,36 @@ void pre_auton(void) {
 /*---------------------------------------------------------------------------*/
 
 void autonomous(void) {
-  // ..........................................................................
-  // Insert autonomous user code here.
-  // ..........................................................................
+//lower lift
+Front_Lift.spinTo(-480, degrees, false);
+
+//drive forward 12 inches
+Drivetrain.driveFor(forward, 12, inches);
+
+//raise front lift to golden angle
+Front_Lift.spinTo(angle, degrees, false);
+
+//rotate 90 degrees left
+Drivetrain.turnFor(90, degrees);
+
+//drive forward 12 inches
+Drivetrain.driveFor(forward, 12, inches);
+
+//rotate 90 degrees right
+Drivetrain.turnFor(-90, degrees);
+
+//start spinning the ring lift
+Ring.spin(forward);
+
+//drive forward 36 inches
+Drivetrain.driveFor(forward, 36, inches);
+
+//stop spinning the ring lift
+Ring.stop();
+
+//drive forward 60 inches
+Drivetrain.driveFor(reverse, 60, inches);
+
 }
 
 /*---------------------------------------------------------------------------*/

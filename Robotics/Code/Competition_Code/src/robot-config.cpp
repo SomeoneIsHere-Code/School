@@ -81,10 +81,10 @@ int rc_auto_loop_function_Controller1() {
         RightDriveSmart.spin(forward);
       }
       // check the ButtonL1/ButtonL2 status to control Back_Lift
-      if (Controller1.ButtonL1.pressing()) {
+      if (Controller1.ButtonL1.pressing()&& !Controller1.ButtonR1.pressing()) {
         Back_Lift.spinTo(0, degrees, false);
         Controller1LeftShoulderControlMotorsStopped = false;
-      } else if (Controller1.ButtonL2.pressing()) {
+      } else if (Controller1.ButtonL2.pressing()&& !Controller1.ButtonR2.pressing()) {
         Back_Lift.spinTo(-480, degrees, false);
         Controller1LeftShoulderControlMotorsStopped = false;
       } else if (!Controller1LeftShoulderControlMotorsStopped) {
@@ -93,10 +93,10 @@ int rc_auto_loop_function_Controller1() {
         Controller1LeftShoulderControlMotorsStopped = true;
       }
       // check the ButtonR1/ButtonR2 status to control Front_Lift
-      if (Controller1.ButtonR1.pressing()) {
+      if (Controller1.ButtonR1.pressing()&& !Controller1.ButtonL1.pressing()) {
         Front_Lift.spinTo(0,degrees, false);
         Controller1RightShoulderControlMotorsStopped = false;
-      } else if (Controller1.ButtonR2.pressing()) {
+      } else if (Controller1.ButtonR2.pressing( )&& !Controller1.ButtonL2.pressing()) {
         Front_Lift.spinTo(-480, degrees, false);
         Controller1RightShoulderControlMotorsStopped = false;
       } else if (!Controller1RightShoulderControlMotorsStopped) {
@@ -104,18 +104,28 @@ int rc_auto_loop_function_Controller1() {
         // set the toggle so that we don't constantly tell the motor to stop when the buttons are released
         Controller1RightShoulderControlMotorsStopped = true;
       }
-      // check the ButtonUp/ButtonDown status to control Ring
-      if (Controller1.ButtonUp.pressing()) {
+
+      // check the ButtonR1&&ButtonL1 status to control intake
+      if (Controller1.ButtonR1.pressing()&& Controller1.ButtonL1.pressing()){
         Ring.spin(forward);
         Controller1UpDownButtonsControlMotorsStopped = false;
-      } else if (Controller1.ButtonDown.pressing()) {
+      } else if (Controller1.ButtonR2.pressing() && Controller1.ButtonL2.pressing()){
         Ring.spin(reverse);
         Controller1UpDownButtonsControlMotorsStopped = false;
-      } else if (!Controller1UpDownButtonsControlMotorsStopped) {
+      } else if (!Controller1RightShoulderControlMotorsStopped && !Controller1LeftShoulderControlMotorsStopped){
         Ring.stop();
         // set the toggle so that we don't constantly tell the motor to stop when the buttons are released
-        Controller1UpDownButtonsControlMotorsStopped = true;
+        Controller1RightShoulderControlMotorsStopped = true;
+        Controller1LeftShoulderControlMotorsStopped = true;
       }
+      
+      if (Controller1.ButtonA.pressing()){
+        Ring.stop();
+
+        Controller1RightShoulderControlMotorsStopped = true;
+        Controller1LeftShoulderControlMotorsStopped = true;
+      }
+  
     }
     // wait before repeating the process
     wait(20, msec);

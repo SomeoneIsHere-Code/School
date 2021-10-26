@@ -69,14 +69,19 @@ void pre_auton(void) {
 
 void autonomous(void) {
 //lower lift
-Front_Lift.spinTo(-480, degrees, true);
+Back_Lift.spinTo(-480, degrees, true);
 
 //drive forward 12 inches
-Drivetrain.driveFor(reverse, 12, inches);
+Drivetrain.driveFor(reverse, 16, inches);
 
 //raise front lift to golden angle
-Front_Lift.spinTo(-160, degrees, false);
+Back_Lift.spinTo(-157, degrees, true);
 
+//start spinning the Ring motor
+Ring.setVelocity(100, percent);
+Ring.spin(forward);
+
+/*
 //rotate 90 degrees left
 Drivetrain.turnFor(-90, degrees);
 
@@ -97,7 +102,7 @@ Ring.stop();
 
 //drive forward 60 inches
 Drivetrain.driveFor(forward, 60, inches);
-
+*/
 }
 
 /*---------------------------------------------------------------------------*/

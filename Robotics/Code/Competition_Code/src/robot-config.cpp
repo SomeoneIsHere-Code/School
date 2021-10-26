@@ -119,13 +119,38 @@ int rc_auto_loop_function_Controller1() {
         Controller1LeftShoulderControlMotorsStopped = true;
       }
       
+      //Stop the Ring Motor when the A button is pressed
       if (Controller1.ButtonA.pressing()){
         Ring.stop();
 
         Controller1RightShoulderControlMotorsStopped = true;
         Controller1LeftShoulderControlMotorsStopped = true;
       }
-  
+
+      //Set front motor to -160 degrees when left is pressed
+      if(Controller1.ButtonRight.pressing()){
+        Front_Lift.spinTo(-155, degrees);
+      } 
+
+      //set Back Motor to -160 degrees when right is pressed
+      if(Controller1.ButtonLeft.pressing()){
+        Back_Lift.spinTo(-155, degrees);
+      }
+
+      //Macro to drop a goal on the back, reverse 12 inches, rotate 180 degrees
+      //drive into the goal, lift to scoring angle
+      /*
+      if(Controller1.ButtonB.pressing()){
+        Back_Lift.spinTo(-480, degrees, true);
+        Drivetrain.driveFor(forward, 12, inches);
+        Drivetrain.turnFor(180, degrees);
+        Drivetrain.driveFor(forward, 12, inches);
+        Front_Lift.spinTo(-155, degrees);
+        Back_Lift.spinTo(0, degrees, false);
+      }
+      */
+
+
     }
     // wait before repeating the process
     wait(20, msec);

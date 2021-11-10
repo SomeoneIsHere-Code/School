@@ -23,13 +23,15 @@ using namespace vex;
 
 // A global instance of competition
 competition Competition;
-
-//Storage for the Autononous we will use
+// storage for our auton selection
 int   autonomousSelection = -1;
 
+/* 
+        James Pearman autoselect functions and definitions. These are modified for Walsh
+*/
 // collect data for on screen button and include off and on color feedback for button
-// prc - instead of radio approach with one button on or off at a time, each button has a state.
-
+// prc - instead of radio approach with one button on or off at a time, each button has
+//          a state.  ie shootPreload may be low yellow and high yellow when on.
 typedef struct _button {
     int    xpos;
     int    ypos;
@@ -54,7 +56,6 @@ button buttons[] = {
     {  270, 150, 60, 60,  false, 0x404040, 0xC0C0C0, "6-" },
     {  390, 150, 60, 60,  false, 0x404040, 0xC0C0C0, "7-" }
 };
-
 
 // forward ref
 void displayButtonControls( int index, bool pressed );
@@ -132,6 +133,7 @@ userTouchCallbackReleased() {
     }
 }
 
+
 /*-----------------------------------------------------------------------------*/
 /** @brief      Draw all buttons                                               */
 /*-----------------------------------------------------------------------------*/
@@ -191,13 +193,13 @@ void pre_auton(void) {
   //setting lift motors so they hold when braking, this makes our lift not slide
   Front_Lift.setBrake(hold);
   Back_Lift.setBrake(hold);
-  
+
   Front_Lift.setPosition(0, degrees);
   Back_Lift.setPosition(0, degrees);
-  
+
 
   // All activities that occur before the competition starts
-  // Example: clearing encoders, setting servo positions, ...
+  // Example: clearing encoders, seting servo positions, ...
 }
 
 /*---------------------------------------------------------------------------*/
@@ -287,15 +289,66 @@ void usercontrol(void) {
 // Main will set up the competition functions and callbacks.
 //
 int main() {
+  // Run the pre-autonomous function.
+  pre_auton(); 
+
   // Set up callbacks for autonomous and driver control periods.
   Competition.autonomous(autonomous);
   Competition.drivercontrol(usercontrol);
+   
+  Brain.Screen.pressed( userTouchCallbackPressed );
+  Brain.Screen.released( userTouchCallbackReleased );
 
-  // Run the pre-autonomous function.
-  pre_auton();
-
+  // initial display
+  displayButtonControls( 0, false );
+  
+  //creating a random number between 0 and 10 to use to display text
+  //"for fun"
+  int textInt = rand() % 10 ;
   // Prevent main from exiting with an infinite loop.
   while (true) {
+    if( !Competition.isEnabled() )
+            Brain.Screen.setFont(fontType::mono20);
+    Brain.Screen.setFillColor( vex::color(0xFFFFFF) );
+
+    Brain.Screen.setPenColor( vex::color(0xc11f27));
+
+
+    if(textInt == 0){
+      Brain.Screen.printAt( 0,  135, "  GO APES GO  " );
+    }
+    else if(textInt == 1){
+      Brain.Screen.printAt( 0,  135, "  I'm KANZI   " );
+    }
+    else if(textInt == 2){
+      Brain.Screen.printAt( 0,  135, "  MONKEEEEEEHHHH  " );
+    }
+    else if(textInt == 3){
+      Brain.Screen.printAt( 0,  135, "  MONKEY MODE ACTIVATED   " );
+    }
+    else if(textInt == 4){
+      Brain.Screen.printAt( 0,  135, "  APES TOGETHER STRONG  " );
+    }
+    else if(textInt == 5){
+      Brain.Screen.printAt( 0,  135, "  ROBO BONOBOS  " );
+    }
+    else if(textInt == 6){
+      Brain.Screen.printAt( 0,  135, "  8756A  " );
+    }
+    else if(textInt == 7){
+      Brain.Screen.printAt( 0,  135, "  Banana powered  " );
+    }
+    else if(textInt == 8){
+      Brain.Screen.printAt( 0,  135, "  f  " );
+    }
+    else if(textInt == 9){
+      Brain.Screen.printAt( 0,  135, "  f  " );
+    }
+    else if(textInt == 10){
+      Brain.Screen.printAt( 0,  135, "  f  " );
+    }
+
     wait(100, msec);
   }
 }
+

@@ -28,6 +28,7 @@ bool RemoteControlCodeEnabled = true;
 bool Controller1LeftShoulderControlMotorsStopped = true;
 bool Controller1RightShoulderControlMotorsStopped = true;
 bool Controller1UpDownButtonsControlMotorsStopped = true;
+bool Controller1XBbuttonControlMotorsStopped = true;
 bool DrivetrainLNeedsToBeStopped_Controller1 = true;
 bool DrivetrainRNeedsToBeStopped_Controller1 = true;
 
@@ -97,7 +98,7 @@ int rc_auto_loop_function_Controller1() {
         Front_Lift.spinTo(0,degrees, false);
         Controller1RightShoulderControlMotorsStopped = false;
       } else if (Controller1.ButtonR2.pressing( )&& !Controller1.ButtonL2.pressing()) {
-        Front_Lift.spinTo(-480, degrees, false);
+        Front_Lift.spinTo(480, degrees, false);
         Controller1RightShoulderControlMotorsStopped = false;
       } else if (!Controller1RightShoulderControlMotorsStopped) {
         Front_Lift.stop();
@@ -108,33 +109,45 @@ int rc_auto_loop_function_Controller1() {
       // check the ButtonR1&&ButtonL1 status to control intake
       if (Controller1.ButtonR1.pressing()&& Controller1.ButtonL1.pressing()){
         Ring.spin(forward);
-        Controller1UpDownButtonsControlMotorsStopped = false;
       } else if (Controller1.ButtonR2.pressing() && Controller1.ButtonL2.pressing()){
         Ring.spin(reverse);
-        Controller1UpDownButtonsControlMotorsStopped = false;
-      } else if (!Controller1RightShoulderControlMotorsStopped && !Controller1LeftShoulderControlMotorsStopped){
-        Ring.stop();
-        // set the toggle so that we don't constantly tell the motor to stop when the buttons are released
-        Controller1RightShoulderControlMotorsStopped = true;
-        Controller1LeftShoulderControlMotorsStopped = true;
-      }
+      } 
       
       //Stop the Ring Motor when the A button is pressed
       if (Controller1.ButtonA.pressing()){
         Ring.stop();
-
-        Controller1RightShoulderControlMotorsStopped = true;
-        Controller1LeftShoulderControlMotorsStopped = true;
       }
 
       //Set front motor to -160 degrees when left is pressed
       if(Controller1.ButtonRight.pressing()){
-        Front_Lift.spinTo(-155, degrees);
+        Front_Lift.spinTo(-130, degrees);
       } 
 
       //set Back Motor to -160 degrees when right is pressed
       if(Controller1.ButtonLeft.pressing()){
-        Back_Lift.spinTo(-155, degrees);
+        Back_Lift.spinTo(-145, degrees);
+      }
+
+      if(Controller1.ButtonUp.pressing()){
+        Front_Lift.spin(forward);
+        Controller1UpDownButtonsControlMotorsStopped = false;
+      } else if(Controller1.ButtonDown.pressing()){
+        Front_Lift.spin(reverse);
+        Controller1UpDownButtonsControlMotorsStopped = false;
+      } else if (!Controller1UpDownButtonsControlMotorsStopped){
+        Front_Lift.stop();
+        Controller1UpDownButtonsControlMotorsStopped = true;
+      }
+
+      if(Controller1.ButtonX.pressing()){
+        Back_Lift.spin(forward);
+        Controller1XBbuttonControlMotorsStopped = false;
+      } else if(Controller1.ButtonB.pressing()){
+        Back_Lift.spin(reverse);
+        Controller1XBbuttonControlMotorsStopped = false;
+      } else if(!Controller1XBbuttonControlMotorsStopped){
+        Back_Lift.stop();
+        Controller1XBbuttonControlMotorsStopped = true;
       }
 
       //Macro to drop a goal on the back, reverse 12 inches, rotate 180 degrees
@@ -163,7 +176,7 @@ int rc_auto_loop_function_Controller1() {
  * 
  * This should be called at the start of your int main function.
  */
-void vexcodeInit( void ) {
+void vexcodeInit(void){
   Brain.Screen.print("Device initialization...");
   Brain.Screen.setCursor(2, 1);
   // calibrate the drivetrain Inertial
